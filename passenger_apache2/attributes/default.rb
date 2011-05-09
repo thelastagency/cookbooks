@@ -1,3 +1,3 @@
-default[:passenger][:version] = "2.2.15"
-set[:passenger][:root_path]   = "#{languages[:ruby][:gems_dir]}/gems/passenger-#{passenger[:version]}"
-set[:passenger][:module_path] = "#{passenger[:root_path]}/ext/apache2/mod_passenger.so"
+default[:passenger][:version] = "3.0.7"
+set[:passenger][:root_path]   = "/usr"
+set[:passenger][:module_path] = "#{passenger[:root_path]}/lib/apache2/modules/mod_passenger.so"

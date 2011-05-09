@@ -40,8 +40,8 @@ service "apache2" do
     reload_command "/sbin/service httpd reload && sleep 1"
   when "debian","ubuntu"
     service_name "apache2"
-    restart_command "/usr/sbin/invoke-rc.d apache2 restart && sleep 1"
-    reload_command "/usr/sbin/invoke-rc.d apache2 reload && sleep 1"
+    restart_command "service apache2 restart"
+    reload_command "service apache2 reload"
   when "arch"
     service_name "httpd"
   end
@@ -205,5 +205,5 @@ include_recipe "apache2::mod_log_config" if platform?("centos", "redhat", "fedor
 apache_site "default" if platform?("centos", "redhat", "fedora")
 
 service "apache2" do
-  action :start
+  action :restart
 end

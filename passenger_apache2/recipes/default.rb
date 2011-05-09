@@ -23,7 +23,7 @@
 # limitations under the License.
 
 include_recipe "packages"
-include_recipe "ruby"
+#include_recipe "ruby"
 include_recipe "apache2"
 
 if platform?("centos","redhat")
@@ -34,19 +34,20 @@ if platform?("centos","redhat")
   else
     package "httpd-devel"
   end
+  
+  gem_package "passenger" do
+    version node[:passenger][:version]
+  end
+
+  execute "passenger_module" do
+    command 'passenger-install-apache2-module --auto'
+    creates node[:passenger][:module_path]
+  end
 else
-  %w{ apache2-prefork-dev libapr1-dev }.each do |pkg|
+  %w{apache2-prefork-dev libapr1-dev libcurl4-gnutls-dev libapache2-mod-passenger}.each do |pkg|
     package pkg do
       action :upgrade
     end
   end
 end
 
-gem_package "passenger" do
-  version node[:passenger][:version]
-end
-
-execute "passenger_module" do
-  command 'echo -en "\n\n\n\n" | passenger-install-apache2-module'
-  creates node[:passenger][:module_path]
-end
